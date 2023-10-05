@@ -1,0 +1,5 @@
+# ninja log v5
+6	562	7182313623021101	CMakeFiles/CGG.dir/main.cpp.obj	d40894a376d1fcc7
+5	645	7182314095235328	CMakeFiles/CGG.dir/test1.cpp.obj	b837cd74d1fadcb8
+650	827	7182340058236064	CGG.exe	1a9e754064f16bdd
+6	649	7182340056794825	CMakeFiles/CGG.dir/vector.cpp.obj	217ce1ba5d7b45c0
