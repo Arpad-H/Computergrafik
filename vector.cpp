@@ -1,6 +1,7 @@
 #include "vector.h"
 #include <assert.h>
 #include <math.h>
+
 #define EPSILON 1e-6
 //using namespace Vector;
 
@@ -94,43 +95,58 @@ Vector Vector::reflection(const Vector &normal) const {
     return *this - v;
 }
 
-bool Vector::   triangleIntersection(const Vector &d, const Vector &a, const Vector &b, const Vector &c, float &s) const {
-    // Calculate the triangle's normal
-    Vector normal = (b - a).cross(c - a).normalize();
+void Vector::test() {
+    //g = (0,1,1) +t(1,0,-1)
+    //E : 2x+y-z = 3
+    Vector d = Vector(1, 0, -1);
+    Vector a = Vector(0, 4, 1);
+    Vector b = Vector(1, 1, 0);
+    Vector c = Vector(1, 2, 1);
+    float s = 0;
+    triangleIntersection(d, a, b, c, s);
 
-    // Calculate the denominator of the Ray-Triangle intersection formula
-    float denominator = d.dot(normal);
-
-    // Check if the ray is parallel to the triangle (no intersection)
-    if (std::abs(denominator) < EPSILON) {
-        return false;
-    }
-
-    // Calculate the parameter 't' for the intersection
-    float t = (normal.dot(a - *this)) / denominator;
-
-    // Check if the intersection point is behind the starting point of the ray
-    if (t < 0) {
-        return false;
-    }
-
-    // Calculate the intersection point
-    Vector intersectionPoint = *this + d * t;
-
-    // Check if the intersection point is inside the triangle
-    Vector edge1 = b - a;
-    Vector edge2 = c - b;
-    Vector edge3 = a - c;
-    Vector C0 = intersectionPoint - a;
-    Vector C1 = intersectionPoint - b;
-    Vector C2 = intersectionPoint - c;
-
-    if (normal.dot(edge1.cross(C0)) >= 0 &&
-        normal.dot(edge2.cross(C1)) >= 0 &&
-        normal.dot(edge3.cross(C2)) >= 0) {
-        s = t;  // Set the intersection distance
-        return true;  // Intersection found
-    }
-
-    return false;  // No intersection
+    std::cout << "s: " << s << " intersection:  " << std::endl;
+    Vector point = *this+d * s;
+    std::cout << "intersection:( " <<  point.X <<","<<point.Y<<","<<point.Z<<")" << std::endl;
 }
+
+bool Vector::triangleIntersection(const Vector &d, const Vector &a, const Vector &b, const Vector &c, float &s) const {
+
+
+    Vector ab = b - a;
+    Vector ac = c - a;
+    Vector normal = (ab.cross(ac)).normalize();
+
+
+
+//    float distOrigin = a.dot(normal);
+//    //parallel or opposing dir
+//    float t = (normal.dot(d));
+//    if (t<=0){
+//        return false;
+//    }
+//    s = distOrigin-(normal.dot(*this))/t;
+//    Vector intersectionPoint = *this+d*s;
+
+    //s = skalar von geraden um den schnittpunkt zu finden
+    s = (a - *this).dot(normal) / d.dot(normal);
+    if (s <= 0) {
+        return false;
+    }
+
+    Vector intersectionPoint = *this+d * s;
+
+    //
+    float area_abc = ab.cross(ac).length() / 2;
+    float area_abp = ab.cross(intersectionPoint - a).length() / 2;
+    float area_acp = ac.cross(intersectionPoint - a).length() / 2;
+    float area_bcp = (b - c).cross(intersectionPoint - b).length() / 2;
+    if (area_abc - (area_acp + area_abp + area_bcp) >= 0 - EPSILON) {
+        return true;
+    }
+    return false;
+
+
+}
+
+

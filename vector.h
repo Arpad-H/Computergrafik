@@ -24,7 +24,8 @@ public:
     float length() const;
     float lengthSquared() const;
     Vector reflection( const Vector& normal) const;
-    bool triangleIntersection( const Vector& d, const Vector& a, const Vector& b,
+     void test();
+     bool triangleIntersection( const Vector& d, const Vector& a, const Vector& b,
                               const Vector& c, float& s) const;
  };
 

@@ -7,7 +7,7 @@ add_executable(CGG main.cpp
         vector.h
         vector.cpp
         test1.cpp
+        rgbimage.cpp
         color.cpp
         test2.cpp
-        rgbimage.cpp
         test3.cpp)
