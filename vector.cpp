@@ -1,7 +1,7 @@
 #include "vector.h"
 #include <assert.h>
 #include <math.h>
-
+#define EPSILON 1e-6
 //using namespace Vector;
 
 Vector::Vector(float x, float y, float z) {
@@ -94,7 +94,43 @@ Vector Vector::reflection(const Vector &normal) const {
     return *this - v;
 }
 
-bool Vector::triangleIntersection(const Vector &d, const Vector &a, const Vector &b, const Vector &c, float &s) const {
-    // TODO: add your code
-    return false; // dummy (remove)
+bool Vector::   triangleIntersection(const Vector &d, const Vector &a, const Vector &b, const Vector &c, float &s) const {
+    // Calculate the triangle's normal
+    Vector normal = (b - a).cross(c - a).normalize();
+
+    // Calculate the denominator of the Ray-Triangle intersection formula
+    float denominator = d.dot(normal);
+
+    // Check if the ray is parallel to the triangle (no intersection)
+    if (std::abs(denominator) < EPSILON) {
+        return false;
+    }
+
+    // Calculate the parameter 't' for the intersection
+    float t = (normal.dot(a - *this)) / denominator;
+
+    // Check if the intersection point is behind the starting point of the ray
+    if (t < 0) {
+        return false;
+    }
+
+    // Calculate the intersection point
+    Vector intersectionPoint = *this + d * t;
+
+    // Check if the intersection point is inside the triangle
+    Vector edge1 = b - a;
+    Vector edge2 = c - b;
+    Vector edge3 = a - c;
+    Vector C0 = intersectionPoint - a;
+    Vector C1 = intersectionPoint - b;
+    Vector C2 = intersectionPoint - c;
+
+    if (normal.dot(edge1.cross(C0)) >= 0 &&
+        normal.dot(edge2.cross(C1)) >= 0 &&
+        normal.dot(edge3.cross(C2)) >= 0) {
+        s = t;  // Set the intersection distance
+        return true;  // Intersection found
+    }
+
+    return false;  // No intersection
 }

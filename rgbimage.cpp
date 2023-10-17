@@ -1,49 +1,58 @@
 #include "rgbimage.h"
 #include "color.h"
 #include "assert.h"
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <fstream>
 
 RGBImage::RGBImage( unsigned int Width, unsigned int Height)
 {
-	// TODO: add your code
+	m_Height = Height;
+    m_Width = Width;
+    m_Image = new Color[m_Width*m_Height];
 }
 
 RGBImage::~RGBImage()
 {
-	// TODO: add your code
+	delete this->m_Image;
 }
 
 void RGBImage::setPixelColor( unsigned int x, unsigned int y, const Color& c)
 {
-	// TODO: add your code
+	m_Image[m_Width*y+x]= getPixelColor(x,y);
 
 }
 
 const Color& RGBImage::getPixelColor( unsigned int x, unsigned int y) const
 {
-	// TODO: add your code
-	return Color(); // dummy (remove)
+	return m_Image[m_Width*y+x];
 }
 
 unsigned int RGBImage::width() const
 {
-	// TODO: add your code
-	return 0; // dummy (remove)
+	return m_Width;
 }
 unsigned int RGBImage::height() const
 {
-	// TODO: add your code
-	return 0; // dummy (remove)
+	return m_Height;
 }
 
 unsigned char RGBImage::convertColorChannel( float v)
 {
-	// TODO: add your code
-	return 0; // dummy (remove)
+    float f2 = std::fmax(0.0, std::fmin(1.0, v));
+   return floor(f2 == 1.0 ? 255 : f2 * 256.0);
+
 }
 
 
 bool RGBImage::saveToDisk( const char* Filename)
 {
-	// TODO: add your code
-	return false; // dummy (remove)
+    std::ofstream f;
+    f.open(Filename, std::ios::out | std::ios::binary);
+    if (!f.is_open()){
+        std::cout << "file cant be opened";
+        return false;
+    }
+    return true;
 }

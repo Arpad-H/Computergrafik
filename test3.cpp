@@ -11,6 +11,7 @@
 #include <math.h>
 #include "rgbimage.h"
 #include "color.h"
+#include <string.h>
 
 #define TEST( Msg, Cond) \
     { if(!(Cond)) { printf( "TEST FAILED: "); printf(Msg); }\

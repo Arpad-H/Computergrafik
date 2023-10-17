@@ -8,6 +8,6 @@ int main(int argc, const char * argv[]) {
 	// uncomment the following functions to start the corresponding test routines
 	Test1::vector();
     //Test2::color();
-    //Test3::rgbimage("");
+    //Test3::rgbimage("C:\\Users\\Arpad\\Documents\\Studium\\Computergrafik\\Output_Images");
     return 0;
 }

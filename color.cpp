@@ -3,34 +3,46 @@
 
 Color::Color()
 {
-  // TODO: add your code
+  R =0;
+  G =0;
+  B =0;
 }
 
 Color::Color( float r, float g, float b)
 {
-	// TODO: add your code
+    R =r;
+    G =g;
+    B =b;
 }
 
 Color Color::operator*(const Color& c) const
 {
-	// TODO: add your code
-    return Color(); // dummy (remove)
+
+    return Color(R*c.R,
+                 G*c.G,
+                 B*c.B); // dummy (remove)
 }
 
 Color Color::operator*(const float Factor) const
 {
-	// TODO: add your code
-	return Color(); // dummy (remove)
+
+	return Color(R*Factor,
+                 G*Factor,
+                 B*Factor); // dummy (remove)
 }
 
 Color Color::operator+(const Color& c) const
 {
-	// TODO: add your code
-	return Color(); // dummy (remove)
+
+	return Color(R+c.R,
+                 G+c.G,
+                 B+c.B); // dummy (remove)
 }
 
 Color& Color::operator+=(const Color& c)
 {
-	// TODO: add your code
+	this->R +=c.R;
+	this->G +=c.G;
+	this->B +=c.B;
 	return *this; // dummy (remove)
 }
