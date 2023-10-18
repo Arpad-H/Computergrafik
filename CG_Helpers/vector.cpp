@@ -19,7 +19,6 @@ Vector::Vector() {
 //                                 const = cant change class member variables || unless variable marked mutable
 float Vector::dot(const Vector &v) const //pass by refrence?
 {
-    // TODO: add your code
     return v.X * X + v.Y * Y + v.Z * Z;
 }
 
@@ -46,17 +45,16 @@ Vector Vector::operator-(const Vector &v) const {
 }
 
 Vector Vector::operator*(float c) const {
-
     return Vector(X * c,
                   Y * c,
                   Z * c);
 }
 
 Vector Vector::operator-() const {
-    // TODO: look at your code
+
     return Vector(-X,
                   -Y,
-                  -Z); //is damit die inverse gemeint?
+                  -Z);
 }
 
 Vector &Vector::operator+=(const Vector &v) {
@@ -117,26 +115,14 @@ bool Vector::triangleIntersection(const Vector &d, const Vector &a, const Vector
     Vector ac = c - a;
     Vector normal = (ab.cross(ac)).normalize();
 
-
-
-//    float distOrigin = a.dot(normal);
-//    //parallel or opposing dir
-//    float t = (normal.dot(d));
-//    if (t<=0){
-//        return false;
-//    }
-//    s = distOrigin-(normal.dot(*this))/t;
-//    Vector intersectionPoint = *this+d*s;
-
     //s = skalar von geraden um den schnittpunkt zu finden
     s = (a - *this).dot(normal) / d.dot(normal);
     if (s <= 0) {
         return false;
     }
-
     Vector intersectionPoint = *this+d * s;
 
-    //
+    //Calculate Triangle Areas
     float area_abc = ab.cross(ac).length() / 2;
     float area_abp = ab.cross(intersectionPoint - a).length() / 2;
     float area_acp = ac.cross(intersectionPoint - a).length() / 2;

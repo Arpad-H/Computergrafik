@@ -3,11 +3,14 @@ project(CGG)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(CGG main.cpp
-        vector.h
-        vector.cpp
-        test1.cpp
-        rgbimage.cpp
-        color.cpp
-        test2.cpp
-        test3.cpp)
+add_executable(CGG
+        CG_Helpers/vector.h
+        CG_Helpers/vector.cpp
+        CG_Helpers/test1.cpp
+        CG_Helpers/rgbimage.cpp
+        CG_Helpers/color.cpp
+        CG_Helpers/test2.cpp
+        CG_Helpers/test3.cpp
+        CGUtilities.cpp
+        main.cpp
+        SimpleRayTracer.cpp)

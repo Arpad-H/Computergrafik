@@ -49,44 +49,56 @@ cmake_ninja_workdir = C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/
 
 build cmake_object_order_depends_target_CGG: phony || CMakeFiles/CGG.dir
 
+build CMakeFiles/CGG.dir/CG_Helpers/vector.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/CG_Helpers/vector.cpp || cmake_object_order_depends_target_CGG
+  DEP_FILE = CMakeFiles\CGG.dir\CG_Helpers\vector.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\CGG.dir
+  OBJECT_FILE_DIR = CMakeFiles\CGG.dir\CG_Helpers
+
+build CMakeFiles/CGG.dir/CG_Helpers/test1.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/CG_Helpers/test1.cpp || cmake_object_order_depends_target_CGG
+  DEP_FILE = CMakeFiles\CGG.dir\CG_Helpers\test1.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\CGG.dir
+  OBJECT_FILE_DIR = CMakeFiles\CGG.dir\CG_Helpers
+
+build CMakeFiles/CGG.dir/CG_Helpers/rgbimage.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/CG_Helpers/rgbimage.cpp || cmake_object_order_depends_target_CGG
+  DEP_FILE = CMakeFiles\CGG.dir\CG_Helpers\rgbimage.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\CGG.dir
+  OBJECT_FILE_DIR = CMakeFiles\CGG.dir\CG_Helpers
+
+build CMakeFiles/CGG.dir/CG_Helpers/color.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/CG_Helpers/color.cpp || cmake_object_order_depends_target_CGG
+  DEP_FILE = CMakeFiles\CGG.dir\CG_Helpers\color.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\CGG.dir
+  OBJECT_FILE_DIR = CMakeFiles\CGG.dir\CG_Helpers
+
+build CMakeFiles/CGG.dir/CG_Helpers/test2.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/CG_Helpers/test2.cpp || cmake_object_order_depends_target_CGG
+  DEP_FILE = CMakeFiles\CGG.dir\CG_Helpers\test2.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\CGG.dir
+  OBJECT_FILE_DIR = CMakeFiles\CGG.dir\CG_Helpers
+
+build CMakeFiles/CGG.dir/CG_Helpers/test3.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/CG_Helpers/test3.cpp || cmake_object_order_depends_target_CGG
+  DEP_FILE = CMakeFiles\CGG.dir\CG_Helpers\test3.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\CGG.dir
+  OBJECT_FILE_DIR = CMakeFiles\CGG.dir\CG_Helpers
+
+build CMakeFiles/CGG.dir/CGUtilities.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/CGUtilities.cpp || cmake_object_order_depends_target_CGG
+  DEP_FILE = CMakeFiles\CGG.dir\CGUtilities.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\CGG.dir
+  OBJECT_FILE_DIR = CMakeFiles\CGG.dir
+
 build CMakeFiles/CGG.dir/main.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/main.cpp || cmake_object_order_depends_target_CGG
   DEP_FILE = CMakeFiles\CGG.dir\main.cpp.obj.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\CGG.dir
   OBJECT_FILE_DIR = CMakeFiles\CGG.dir
 
-build CMakeFiles/CGG.dir/vector.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/vector.cpp || cmake_object_order_depends_target_CGG
-  DEP_FILE = CMakeFiles\CGG.dir\vector.cpp.obj.d
-  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\CGG.dir
-  OBJECT_FILE_DIR = CMakeFiles\CGG.dir
-
-build CMakeFiles/CGG.dir/test1.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/test1.cpp || cmake_object_order_depends_target_CGG
-  DEP_FILE = CMakeFiles\CGG.dir\test1.cpp.obj.d
-  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\CGG.dir
-  OBJECT_FILE_DIR = CMakeFiles\CGG.dir
-
-build CMakeFiles/CGG.dir/rgbimage.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/rgbimage.cpp || cmake_object_order_depends_target_CGG
-  DEP_FILE = CMakeFiles\CGG.dir\rgbimage.cpp.obj.d
-  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\CGG.dir
-  OBJECT_FILE_DIR = CMakeFiles\CGG.dir
-
-build CMakeFiles/CGG.dir/color.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/color.cpp || cmake_object_order_depends_target_CGG
-  DEP_FILE = CMakeFiles\CGG.dir\color.cpp.obj.d
-  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\CGG.dir
-  OBJECT_FILE_DIR = CMakeFiles\CGG.dir
-
-build CMakeFiles/CGG.dir/test2.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/test2.cpp || cmake_object_order_depends_target_CGG
-  DEP_FILE = CMakeFiles\CGG.dir\test2.cpp.obj.d
-  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\CGG.dir
-  OBJECT_FILE_DIR = CMakeFiles\CGG.dir
-
-build CMakeFiles/CGG.dir/test3.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/test3.cpp || cmake_object_order_depends_target_CGG
-  DEP_FILE = CMakeFiles\CGG.dir\test3.cpp.obj.d
+build CMakeFiles/CGG.dir/SimpleRayTracer.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Users/quint/Documents/Studium/HSOS/Computergrafik/CGG/SimpleRayTracer.cpp || cmake_object_order_depends_target_CGG
+  DEP_FILE = CMakeFiles\CGG.dir\SimpleRayTracer.cpp.obj.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\CGG.dir
   OBJECT_FILE_DIR = CMakeFiles\CGG.dir
@@ -99,7 +111,7 @@ build CMakeFiles/CGG.dir/test3.cpp.obj: CXX_COMPILER__CGG_unscanned_Debug C$:/Us
 #############################################
 # Link the executable CGG.exe
 
-build CGG.exe: CXX_EXECUTABLE_LINKER__CGG_Debug CMakeFiles/CGG.dir/main.cpp.obj CMakeFiles/CGG.dir/vector.cpp.obj CMakeFiles/CGG.dir/test1.cpp.obj CMakeFiles/CGG.dir/rgbimage.cpp.obj CMakeFiles/CGG.dir/color.cpp.obj CMakeFiles/CGG.dir/test2.cpp.obj CMakeFiles/CGG.dir/test3.cpp.obj
+build CGG.exe: CXX_EXECUTABLE_LINKER__CGG_Debug CMakeFiles/CGG.dir/CG_Helpers/vector.cpp.obj CMakeFiles/CGG.dir/CG_Helpers/test1.cpp.obj CMakeFiles/CGG.dir/CG_Helpers/rgbimage.cpp.obj CMakeFiles/CGG.dir/CG_Helpers/color.cpp.obj CMakeFiles/CGG.dir/CG_Helpers/test2.cpp.obj CMakeFiles/CGG.dir/CG_Helpers/test3.cpp.obj CMakeFiles/CGG.dir/CGUtilities.cpp.obj CMakeFiles/CGG.dir/main.cpp.obj CMakeFiles/CGG.dir/SimpleRayTracer.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\CGG.dir
