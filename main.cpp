@@ -1,10 +1,10 @@
 #include <iostream>
 #include "CGUtilities.h"
-#include "../../../../../Downloads/CGPrakt2/CGPrakt2/src/rgbimage.h"
 #include "SimpleRayTracer.h"
 #include "CG_Helpers/test3.h"
 #include "CG_Helpers/test2.h"
 #include "CG_Helpers/test1.h"
+#include "CG_Helpers/rgbimage.h"
 
 
 int main(int argc, const char * argv[]) {
@@ -13,14 +13,14 @@ int main(int argc, const char * argv[]) {
 //    v1.test();
 
 
-	Test1::vector();
-    Test2::color();
-    Test3::rgbimage("C:\\Users\\quint\\Documents\\Studium\\HSOS\\Computergrafik\\CGG\\Output_Images");
+//	Test1::vector();
+//    Test2::color();
+//    Test3::rgbimage("C:\\Users\\Arpad\\Documents\\Studium\\Computergrafik\\Output_Images");
 
-//    Scene scene(0);
-//    RGBImage image(640,480);
-//    SimpleRayTracer tracer(2);
-//    tracer.traceScene(scene, image);
-//    image.saveToDisk("raytracing_image.bmp");
-//    return 0;
+    Scene scene(4);
+    RGBImage image(640,480);
+    SimpleRayTracer tracer(2);
+    tracer.traceScene(scene, image);
+    image.saveToDisk("C:\\\\Users\\\\Arpad\\\\Documents\\\\Studium\\\\Computergrafik\\\\Output_Images\\\\raytracing_image.bmp");
+    return 0;
 }

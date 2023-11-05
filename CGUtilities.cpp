@@ -8,6 +8,7 @@
 
 #include "CGUtilities.h"
 #include "assert.h"
+#include "CG_Helpers/color.h"
 #define _USE_MATH_DEFINES
 #include "math.h"
 #include <vector>

@@ -8,7 +8,8 @@
 
 #ifndef SimpleRayTracer_SimpleRayTracer_h
 #define SimpleRayTracer_SimpleRayTracer_h
-
+#include "CG_Helpers/Vector.h"
+#include "CG_Helpers/Color.h"
 #include "CGUtilities.h"
 
 class RGBImage;
@@ -35,7 +36,8 @@ public:
     void traceScene( const Scene& SceneModel, RGBImage& Image);
 protected:
     Color trace( const Scene& SceneModel, const Vector& o, const Vector& d, int depth);
-    Color localIllumination( const Vector& SurfacePoint, const Vector& Eye, const Vector& Normal, const PointLight& Light, const Material& Material );    
+    Color localIllumination( const Vector& SurfacePoint, const Vector& Eye, const Vector& Normal, const PointLight& Light, const Material& Material );
+    int m_MaxDepth;
 };
 
 

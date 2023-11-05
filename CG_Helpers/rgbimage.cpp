@@ -6,47 +6,41 @@
 #include <iostream>
 #include <fstream>
 
-RGBImage::RGBImage( unsigned int Width, unsigned int Height)
-{
+RGBImage::RGBImage(unsigned int Width, unsigned int Height) {
     m_Height = Height;
     m_Width = Width;
-    m_Image = new Color[m_Width*m_Height];
+    m_Image = new Color[m_Width * m_Height];
 }
 
-RGBImage::~RGBImage()
-{
+RGBImage::~RGBImage() {
     delete this->m_Image;
 }
 
-void RGBImage::setPixelColor( unsigned int x, unsigned int y, const Color& c)
-{
-    m_Image[m_Width*y+x]= c;
+void RGBImage::setPixelColor(unsigned int x, unsigned int y, const Color &c) {
+    m_Image[m_Width * y + x] = c;
 
 }
 
-const Color& RGBImage::getPixelColor( unsigned int x, unsigned int y) const
-{
-    return m_Image[m_Width*y+x];
+const Color &RGBImage::getPixelColor(unsigned int x, unsigned int y) const {
+    return m_Image[m_Width * y + x];
 }
 
-unsigned int RGBImage::width() const
-{
+unsigned int RGBImage::width() const {
     return m_Width;
 }
-unsigned int RGBImage::height() const
-{
+
+unsigned int RGBImage::height() const {
     return m_Height;
 }
 
-unsigned char RGBImage::convertColorChannel( float v)
-{
-//    float f2 = std::fmax(0.0, std::fmin(1.0, v));
-//    return floor(f2 == 1.0 ? 255 : f2 * 256.0);
-    return v*255;
+unsigned char RGBImage::convertColorChannel(float v) {
+    float f2 = std::fmax(0.0, std::fmin(1.0, v));
+    return floor(f2 == 1.0 ? 255 : f2 * 256.0);
+    //return v*255;
 
 }
 
-////function to generate a 24 bit bmp file given the Filename and an Array with the pixel values
+//function to generate a 24 bit bmp file given the Filename and an Array with the pixel values
 //bool RGBImage::saveToDisk( const char* Filename)
 //{
 //    std::ofstream f;
@@ -109,9 +103,9 @@ unsigned char RGBImage::convertColorChannel( float v)
 //    f.close();
 //    return true;
 //}
-bool RGBImage::saveToDisk(const char* Filename) {
+bool RGBImage::saveToDisk(const char *Filename) {
     // Öffnen der Datei zum Schreiben im binären Modus
-    FILE* file = fopen(Filename, "wb");
+    FILE *file = fopen(Filename, "wb");
     if (file == nullptr) {
         std::cerr << "Fehler beim Öffnen der Datei zum Schreiben." << std::endl;
         return false;
@@ -134,8 +128,8 @@ bool RGBImage::saveToDisk(const char* Filename) {
             24, 0,               // Bittiefe (24-Bit RGB)
             0, 0, 0, 0,          // Keine Kompression
             0, 0, 0, 0,          // Bildgröße (wird später berechnet)
-            0, 0, 0, 0,          // X-Auflösung (nicht relevant)
-            0, 0, 0, 0           // Y-Auflösung (nicht relevant)
+            0, 0, 0, 0,          // X-Auflösung
+            0, 0, 0, 0           // Y-Auflösung
     };
 
     // Bildgröße im Header aktualisieren
@@ -149,9 +143,9 @@ bool RGBImage::saveToDisk(const char* Filename) {
     fwrite(infoHeader, 1, 40, file);
 
     // Bildpixel in die Datei schreiben
-    for (unsigned int y = 0; y <m_Height; y++) {
+    for (unsigned int y = 0; y < m_Height; y++) {
         for (unsigned int x = 0; x < m_Width; x++) {
-            const Color& pixelColor = getPixelColor(x, y);
+            const Color &pixelColor = getPixelColor(x, y);
             unsigned char r = convertColorChannel(pixelColor.R);
             unsigned char g = convertColorChannel(pixelColor.G);
             unsigned char b = convertColorChannel(pixelColor.B);

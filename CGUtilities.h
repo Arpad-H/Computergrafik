@@ -9,8 +9,9 @@
 #ifndef SimpleRayTracer_CGUtilities_h
 #define SimpleRayTracer_CGUtilities_h
 #include <vector>
-#include "../../../../../Downloads/CGPrakt2/CGPrakt2/src/vector.h"
-#include "../../../../../Downloads/CGPrakt2/CGPrakt2/src/color.h"
+#include "CG_Helpers/color.h"
+#include "CG_Helpers/vector.h"
+
 
 class Material
 {
