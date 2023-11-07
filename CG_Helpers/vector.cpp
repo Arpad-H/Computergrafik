@@ -57,6 +57,7 @@ Vector Vector::operator-() const {
                   -Z);
 }
 
+
 Vector &Vector::operator+=(const Vector &v) {
     // TODO: Read up on this crap, the refrencing that is
     this->X += v.X;

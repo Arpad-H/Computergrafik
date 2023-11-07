@@ -17,10 +17,10 @@ int main(int argc, const char * argv[]) {
 //    Test2::color();
 //    Test3::rgbimage("C:\\Users\\Arpad\\Documents\\Studium\\Computergrafik\\Output_Images");
 
-    Scene scene(4);
+    Scene scene(20);
     RGBImage image(640,480);
     SimpleRayTracer tracer(2);
     tracer.traceScene(scene, image);
-    image.saveToDisk("C:\\\\Users\\\\Arpad\\\\Documents\\\\Studium\\\\Computergrafik\\\\Output_Images\\\\raytracing_image.bmp");
+    image.saveToDisk("C:\\\\Users\\\\quint\\\\Documents\\\\Studium\\\\HSOS\\\\Computergrafik\\\\CGG\\\\Output_Images\\\\raytracing_image.bmp");
     return 0;
 }
