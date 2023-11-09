@@ -13,6 +13,7 @@
 #include "math.h"
 #include <vector>
 #include <map>
+#include <cstdint>
 
 class NoiseGrid
 {
@@ -82,11 +83,11 @@ public:
         m_SpecularExp = 32;
         m_Reflectivity = 0.10f;
     }
-    ProcMaterial( const Color& Diffuse, const Color& Specular, const Color& Ambient, float SpecularExp, float OpticalDensityN)
-        : Material( Diffuse, Specular, Ambient, SpecularExp, OpticalDensityN)
-    {
-        
-    }
+//    ProcMaterial( const Color& Diffuse, const Color& Specular, const Color& Ambient, float SpecularExp, float OpticalDensityN,float RefractionIndex)
+//        : Material( Diffuse, Specular, Ambient, SpecularExp, OpticalDensityN, RefractionIndex
+//    {
+//
+//    }
 
     
     Color getDiffuseCoeff(const Vector& Pos) const
@@ -110,11 +111,12 @@ public:
 ProcMaterial ProcMaterial::DefaultMaterial;
 
 Material Material::DefaultMaterial;
-Material Material::RedMtrl( Color(0.8f, 0.2f, 0.2f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f);
-Material Material::GreenMtrl( Color(0.2f, 0.8f, 0.2f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f);
-Material Material::BlueMtrl( Color(0.2f, 0.2f, 0.8f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f);
-Material Material::YellowMtrl( Color(0.8f, 0.8f, 0.2f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f);
-Material Material::CyanMtrl( Color(0.2f, 0.8f, 0.8f), Color(0.3f,0.3f,0.3f), Color(0.0f,0.0f,0.0f), 16, 0.3f);
+Material Material::RedMtrl( Color(0.8f, 0.2f, 0.2f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f,1);
+Material Material::GreenMtrl( Color(0.2f, 0.8f, 0.2f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3,1);
+Material Material::BlueMtrl( Color(0.2f, 0.2f, 0.8f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f,1);
+Material Material::YellowMtrl( Color(0.8f, 0.8f, 0.2f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f,1);
+Material Material::CyanMtrl( Color(0.2f, 0.8f, 0.8f), Color(0.3f,0.3f,0.3f), Color(0.0f,0.0f,0.0f), 16, 0.3f,1);
+Material Material::GlasMtrl( Color(0.0f, 0.0f, 0.0f), Color(0.0f,0.0f,0.0f), Color(0.0f,0.0f,0.0f), 16, 0.3f,1.33);
 
 
 Material::Material()
@@ -126,13 +128,15 @@ Material::Material()
     
 }
 
-Material::Material(const Color& Diffuse, const Color& Specular, const Color& Ambient, float SpecularExp, float Reflectivity)
+Material::Material(const Color& Diffuse, const Color& Specular, const Color& Ambient, float SpecularExp, float Reflectivity, float N2)
 {
     m_DiffuseCoeff = Diffuse;
     m_SpecularCoeff = Specular;
     m_AmbientCoeff = Ambient;
     m_SpecularExp = SpecularExp;
     m_Reflectivity = Reflectivity;
+    n2 = N2;
+    n1 = 1.0;
 }
 
 float Material::getReflectivity(const Vector& Pos) const
@@ -158,6 +162,90 @@ float Material::getSpecularExp(const Vector& Pos) const
 {
     return m_SpecularExp;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//TODO: Implement this
+float Material::getReflectionCoeff(const Vector &Pos, const Vector& Normal) const {
+    //Schlick Aproximation folie 31
+    float R0 = ((n1 - n2) / (n1 + n2)) * ((n1 - n2) / (n1 + n2));
+    float R = R0 + (1 - R0) * pow((1 - Pos.dot(Normal)), 5);
+    return R;
+
+}
+float Material::getTransmissionCoeff(const Vector &Pos, const Vector& Normal) const {
+    return 1-getReflectionCoeff(Pos, Normal);
+}
+
+Vector Material::refract(const Vector& I, const Vector& N ,  float N1,  float N2) const
+{
+    //Folie 26
+    //T = n1/n2 (I - N(I · N)) - N sqrt( (1- n1^2(1-(I · N)^2) / n2^2))
+    float r = N1/N2;
+    float c = I.dot(N);
+    float discriminant = 1 - r*r*(1-c*c);
+    if (discriminant >= 0){
+        return (-(I*r) + N*(r*c - sqrt(discriminant))).normalize();
+    }
+return Vector(INT64_MAX,INT64_MAX,INT64_MAX);
+}
+
+
+
+float Material::getN1()  {
+    return n1;
+}
+float Material::getN2()  {
+    return n1;
+}
+float Material::setN1( float &N1)  {
+    this->n1 = N1;
+}
+float Material::setN2( float &N2)  {
+    this->n2 = N2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Triangle::Triangle()
 {

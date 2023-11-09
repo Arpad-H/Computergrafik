@@ -17,13 +17,23 @@ class Material
 {
 public:
     Material();
-    Material( const Color& Diffuse, const Color& Specular, const Color& Ambient, float SpecularExp,  float Reflectivity);
+    Material( const Color& Diffuse, const Color& Specular, const Color& Ambient, float SpecularExp,  float Reflectivity,float RefractiveIndex);
     virtual Color getDiffuseCoeff(const Vector& Pos) const;
     virtual Color getSpecularCoeff(const Vector& Pos) const;
     virtual Color getAmbientCoeff(const Vector& Pos) const;
     virtual float getSpecularExp(const Vector& Pos) const;
     virtual float getReflectivity(const Vector& Pos) const;
-    
+
+
+    virtual float getN1() ;
+    virtual float getN2() ;
+    virtual float setN2(float &N2);
+    virtual float setN1(float &N1);
+
+
+    virtual float getReflectionCoeff(const Vector& Posconst,const Vector& Normal) const;
+    virtual float getTransmissionCoeff(const Vector& Pos, const Vector& Normal) const;
+    virtual Vector refract (const Vector& I, const Vector& N,  float n1,  float n2)const;
 
     static Material DefaultMaterial;
     static Material RedMtrl;
@@ -31,6 +41,11 @@ public:
     static Material BlueMtrl;
     static Material YellowMtrl;
     static Material CyanMtrl;
+    static Material GlasMtrl;
+
+     float n2;
+     float n1;
+
 protected:
     Color m_DiffuseCoeff;
     Color m_SpecularCoeff;
@@ -38,6 +53,8 @@ protected:
     float m_SpecularExp;
 
     float m_Reflectivity;
+
+
 };
 
 
