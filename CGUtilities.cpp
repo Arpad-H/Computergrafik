@@ -82,6 +82,8 @@ public:
         m_SpecularCoeff = Color(0.6f,0.6f,0.6f);
         m_SpecularExp = 32;
         m_Reflectivity = 0.10f;
+        n2 = 1.33;
+        n1 = 1.0;
     }
 //    ProcMaterial( const Color& Diffuse, const Color& Specular, const Color& Ambient, float SpecularExp, float OpticalDensityN,float RefractionIndex)
 //        : Material( Diffuse, Specular, Ambient, SpecularExp, OpticalDensityN, RefractionIndex
@@ -89,34 +91,34 @@ public:
 //
 //    }
 
-    
+
     Color getDiffuseCoeff(const Vector& Pos) const
     {
         Vector P = Pos*2.0f + Vector( 2,0,0);
         float r = sqrt( P.X*P.X + P.Z * P.Z);
-        
+
         r -= sin( (float)M_PI * r /3.0f /*/ 6*/);
         r += 0.1f * Noisegrid.value(P.X/6.0f, P.Z/6.0f, P.Y/6.0f);
-        
+
         float d = fmod(r, 0.5f) / 0.5f;
-        
+
         return m_DiffuseCoeff * sqrt(d) + m_DiffuseCoeff*0.8f * (1-sqrt(d));// Noisegrid.value(Pos.X , Pos.Y, Pos.Z);
 
     }
-    
+
     static ProcMaterial DefaultMaterial;
-    
+
 };
 
 ProcMaterial ProcMaterial::DefaultMaterial;
 
 Material Material::DefaultMaterial;
-Material Material::RedMtrl( Color(0.8f, 0.2f, 0.2f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f,1);
-Material Material::GreenMtrl( Color(0.2f, 0.8f, 0.2f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3,1);
-Material Material::BlueMtrl( Color(0.2f, 0.2f, 0.8f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f,1);
-Material Material::YellowMtrl( Color(0.8f, 0.8f, 0.2f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f,1);
-Material Material::CyanMtrl( Color(0.2f, 0.8f, 0.8f), Color(0.3f,0.3f,0.3f), Color(0.0f,0.0f,0.0f), 16, 0.3f,1);
-Material Material::GlasMtrl( Color(0.0f, 0.0f, 0.0f), Color(0.0f,0.0f,0.0f), Color(0.0f,0.0f,0.0f), 16, 0.3f,1.33);
+Material Material::RedMtrl( Color(0.8f, 0.2f, 0.2f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f);
+Material Material::GreenMtrl( Color(0.2f, 0.8f, 0.2f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3);
+Material Material::BlueMtrl( Color(0.2f, 0.2f, 0.8f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f);
+Material Material::YellowMtrl( Color(0.8f, 0.8f, 0.2f), Color(0.3f,0.3f,0.3f), Color(0.0,0.0f,0.0f), 16, 0.3f);
+Material Material::CyanMtrl( Color(0.2f, 0.8f, 0.8f), Color(0.3f,0.3f,0.3f), Color(0.0f,0.0f,0.0f), 16, 0.3f);
+//Material Material::GlasMtrl( Color(0.0f, 0.0f, 0.0f), Color(0.0f,0.0f,0.0f), Color(0.0f,0.0f,0.0f), 16, 0.3f,1.33);
 
 
 Material::Material()
@@ -128,15 +130,15 @@ Material::Material()
     
 }
 
-Material::Material(const Color& Diffuse, const Color& Specular, const Color& Ambient, float SpecularExp, float Reflectivity, float N2)
+Material::Material(const Color& Diffuse, const Color& Specular, const Color& Ambient, float SpecularExp, float Reflectivity)
 {
     m_DiffuseCoeff = Diffuse;
     m_SpecularCoeff = Specular;
     m_AmbientCoeff = Ambient;
     m_SpecularExp = SpecularExp;
     m_Reflectivity = Reflectivity;
-    n2 = N2;
-    n1 = 1.0;
+    n2 = 1.0f;
+    n1 = 1.0f;
 }
 
 float Material::getReflectivity(const Vector& Pos) const
@@ -177,72 +179,166 @@ float Material::getSpecularExp(const Vector& Pos) const
 
 
 //TODO: Implement this
-float Material::getReflectionCoeff(const Vector &Pos, const Vector& Normal) const {
+float Material::schlick(const Vector &Dir, const Vector& Normal, const float &N1, const float &N2) const {
     //Schlick Aproximation folie 31
-    float R0 = ((n1 - n2) / (n1 + n2)) * ((n1 - n2) / (n1 + n2));
-    float R = R0 + (1 - R0) * pow((1 - Pos.dot(Normal)), 5);
+    float R0 = ((N1 - N2) / (N1 + N2)) * ((N1 - N2) / (N1 + N2));
+    float R = R0 + (1 - R0) * pow((1 + Dir.dot(Normal)), 5);
     return R;
 
 }
 float Material::getTransmissionCoeff(const Vector &Pos, const Vector& Normal) const {
-    return 1-getReflectionCoeff(Pos, Normal);
+    return 1-schlick(Pos, Normal, n1, n2);
 }
 
-Vector Material::refract(const Vector& I, const Vector& N ,  float N1,  float N2) const
-{
+//Vector Material::refract(const Vector& Ray_in, const Vector& Normal , float N1, float N2) const
+//{
     //Folie 26
-    //T = n1/n2 (I - N(I · N)) - N sqrt( (1- n1^2(1-(I · N)^2) / n2^2))
-    float r = N1/N2;
-    float c = I.dot(N);
-    float discriminant = 1 - r*r*(1-c*c);
-    if (discriminant >= 0){
-        return (-(I*r) + N*(r*c - sqrt(discriminant))).normalize();
+    //T = n1/n2 (Ray_in - Normal(Ray_in · Normal)) - Normal sqrt( (1- n1^2(1-(Ray_in · Normal)^2) / n2^2))
+//    float r = N1/N2;
+//    float c = Ray_in.dot(Normal);
+//    float discriminant = 1 - r*r*(1-c*c);
+//    if (discriminant >= 0){
+//        return (-(Ray_in * r) + Normal * (r * c - sqrt(discriminant)));
+//    }
+//    //Total internal reflection
+//return Vector(INT64_MAX,INT64_MAX,INT64_MAX);
+Vector Material::refract(const Vector& Ray_in, const Vector& Normal , float N1, float N2) const
+    {
+        const double n = N1 / N2;
+        const double cosI = -Normal.dot(Ray_in);
+        const double sinT2 = n * n * (1.0 - cosI * cosI);
+        if(sinT2 > 1.0) return Vector(INT64_MAX,INT64_MAX,INT64_MAX);
+        const double cosT = sqrt(1.0 - sinT2);
+        return Ray_in*n + Normal*(n * cosI - cosT);
     }
-return Vector(INT64_MAX,INT64_MAX,INT64_MAX);
+//}
+
+
+
+Vector Material::reflect(const Vector &I, const Vector &N) const {
+
+//    std::cout << "currently in  Reflect" << std::endl;
+
+    float dotProduct = I.dot(N);
+//    std::cout << "dotProduct: " << dotProduct << std::endl;
+    float times2 = dotProduct * 2;
+//    std::cout << "times2: " << times2 << std::endl;
+    Vector timesN = N * times2;
+//    std::cout << "timesN: " << timesN.X << ", " << timesN.Y << ", " << timesN.Z << std::endl;
+    Vector R = I - timesN;
+//    std::cout << "R: " << R.X << ", " << R.Y << ", " << R.Z << std::endl;
+
+//    std::cout << "leaving  Reflect" << std::endl;
+    if (R.length() == 0){
+        return R;
+    }
+    return R.normalize();
+}
+
+void Material::test() const{
+    std::cout << "Start Reflect Test" << std::endl;
+    Vector debugDirection;
+    Vector d = Vector(0.0, 0.0, 0.0);
+    Vector n = Vector(0.0, 1.0, 0.0);
+    debugDirection = reflect(d, n);
+    std::cout << "expected 0.0, 0.0, 0.0 | calculated" << debugDirection.X << ", " << debugDirection.Y << ", " << debugDirection.Z << std::endl;
+
+
+    d = Vector(0.707, -0.707, 0.0);
+    n = Vector(0.0, 1.0, 0.0);
+    debugDirection = reflect(d, n);
+    std::cout << "expected 0.707, 0.707, 0.0 | calculated "<< debugDirection.X << ", " << debugDirection.Y << ", " << debugDirection.Z << std::endl;
+
+    std::cout << "Start Schlick Test" << std::endl;
+    // test schlick
+    d = Vector(0.707, 0.707, 0.0);
+    n = Vector(0.0, 1.0, 0.0);
+    double n1 = 1.0;
+    double n2 = 1.5;
+    double rPhi = schlick(d, n, n1, n2);
+    std::cout << "expected 13.9579 | calculated "<<rPhi<< std::endl;
+
+    d = Vector(0.707, 0.707, 0.0);
+    n = Vector(0.0, 1.0, 0.0);
+    n1 = 1.5;
+    n2 = 1.0;
+    rPhi = schlick(d, n, n1, n2);
+    std::cout << " expected 13.9579 | calculated "<<rPhi<< std::endl;
+
+    d = Vector(0.995, -0.1, 0.0);
+    n = Vector(0.0, 1.0, 0.0);
+    n1 = 1.0;
+    n2 = 1.5;
+    rPhi = schlick(d, n, n1, n2);
+    std::cout << " expected 0.608435 | calculated "<<rPhi<< std::endl;
+
+    d = Vector(0.995, -0.1, 0.0);
+    n = Vector(0.0, 1.0, 0.0);
+    n1 = 1.5;
+    n2 = 1.0;
+    rPhi = schlick(d, n, n1, n2);
+    std::cout << " expected 0.608435 | calculated "<<rPhi<< std::endl;
+
+    std::cout << "Start Refract Test" << std::endl;
+    // test refract
+    d = Vector(0.707, 0.707, 0.0);
+    n = Vector(0.0, 1.0, 0.0);
+    n1 = 1.0;
+    n2 = 1.5;
+    debugDirection = refract(d, n, n1, n2);
+    std::cout << " expected 0.471, -0.882, 0.0 | calculated "<< debugDirection.X << ", " << debugDirection.Y << ", " << debugDirection.Z << std::endl;
+
+    d = Vector(0.707, 0.707, 0.0);
+    n = Vector(0.0, 1.0, 0.0);
+    n1 = 1.5;
+    n2 = 1.0;
+    debugDirection = refract(d, n, n1, n2);
+    if (debugDirection.X == INT64_MAX) std::cout << "MAAAAX" << std::endl;
+    std::cout << " expected null | calculated "<< debugDirection.X << ", " << debugDirection.Y << ", " << debugDirection.Z << std::endl;
+
+    d = Vector(0.995, -0.1, 0.0);
+    n = Vector(0.0, 1.0, 0.0);
+    n1 = 1.0;
+    n2 = 1.5;
+    debugDirection = refract(d, n, n1, n2);
+    std::cout << " expected 0.663, -0.748, 0.0 | calculated "<< debugDirection.X << ", " << debugDirection.Y << ", " << debugDirection.Z << std::endl;
+
+    d = Vector(0.995, -0.1, 0.0);
+    n = Vector(0.0, 1.0, 0.0);
+    n1 = 1.5;
+    n2 = 1.0;
+    debugDirection = refract(d, n, n1, n2);
+    if (debugDirection.X == INT64_MAX) std::cout << "MAAAAX" << std::endl;
+    std::cout << " expected null | calculated "<< debugDirection.X << ", " << debugDirection.Y << ", " << debugDirection.Z << std::endl;
+
+    d = Vector(0.1, -0.995, 0.0);
+    n = Vector(0.0, 1.0, 0.0);
+    n1 = 1.0;
+    n2 = 1.5;
+    debugDirection = refract(d, n, n1, n2);
+    std::cout << " expected 0.066, -0.998, 0.0 | calculated "<< debugDirection.X << ", " << debugDirection.Y << ", " << debugDirection.Z << std::endl;
+
+    d = Vector(0.1, -0.995, 0.0);
+    n = Vector(0.0, 1.0, 0.0);
+    n1 = 1.5;
+    n2 = 1.0;
+    debugDirection = refract(d, n, n1, n2);
+    std::cout << " expected 0.149, -0.989, 0.0 | calculated "<< debugDirection.X << ", " << debugDirection.Y << ", " << debugDirection.Z << std::endl;
 }
 
 
-
-float Material::getN1()  {
+float Material::getN1()  const{
     return n1;
 }
-float Material::getN2()  {
+float Material::getN2()  const{
     return n1;
 }
-float Material::setN1( float &N1)  {
+void Material::setN1( float &N1)  {
     this->n1 = N1;
 }
-float Material::setN2( float &N2)  {
+void Material::setN2( float &N2)  {
     this->n2 = N2;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

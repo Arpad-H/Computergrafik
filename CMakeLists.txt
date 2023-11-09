@@ -13,4 +13,5 @@ add_executable(CGG
         CG_Helpers/test3.cpp
         CGUtilities.cpp
         main.cpp
-        SimpleRayTracer.cpp)
+        SimpleRayTracer.cpp
+)

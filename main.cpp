@@ -17,7 +17,7 @@ int main(int argc, const char * argv[]) {
 //    Test2::color();
 //    Test3::rgbimage("C:\\Users\\Arpad\\Documents\\Studium\\Computergrafik\\Output_Images");
 
-    Scene scene(10);
+    Scene scene(20);
     RGBImage image(640,480);
     SimpleRayTracer tracer(2);
     tracer.traceScene(scene, image);

@@ -17,7 +17,7 @@ class Material
 {
 public:
     Material();
-    Material( const Color& Diffuse, const Color& Specular, const Color& Ambient, float SpecularExp,  float Reflectivity,float RefractiveIndex);
+    Material( const Color& Diffuse, const Color& Specular, const Color& Ambient, float SpecularExp,  float Reflectivity);
     virtual Color getDiffuseCoeff(const Vector& Pos) const;
     virtual Color getSpecularCoeff(const Vector& Pos) const;
     virtual Color getAmbientCoeff(const Vector& Pos) const;
@@ -25,16 +25,16 @@ public:
     virtual float getReflectivity(const Vector& Pos) const;
 
 
-    virtual float getN1() ;
-    virtual float getN2() ;
-    virtual float setN2(float &N2);
-    virtual float setN1(float &N1);
+    virtual float getN1()const ;
+    virtual float getN2() const;
+    virtual void setN2(float &N2);
+    virtual void setN1(float &N1);
 
 
-    virtual float getReflectionCoeff(const Vector& Posconst,const Vector& Normal) const;
+    virtual float schlick(const Vector &Pos, const Vector& Normal, const float &N1, const float &N2) const ;
     virtual float getTransmissionCoeff(const Vector& Pos, const Vector& Normal) const;
-    virtual Vector refract (const Vector& I, const Vector& N,  float n1,  float n2)const;
-
+    virtual Vector refract (const Vector& Ray_in, const Vector& Normal, float n1, float n2)const;
+    Vector reflect(const Vector &I, const Vector &N) const;
     static Material DefaultMaterial;
     static Material RedMtrl;
     static Material GreenMtrl;
@@ -45,6 +45,8 @@ public:
 
      float n2;
      float n1;
+
+    virtual void test() const;
 
 protected:
     Color m_DiffuseCoeff;
