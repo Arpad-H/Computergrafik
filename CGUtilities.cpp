@@ -127,6 +127,9 @@ Material::Material()
     m_AmbientCoeff = Color(0.2f,0.2f,0.2f);
     m_SpecularCoeff = Color(0.4f,0.4f,0.4f);
     m_SpecularExp = 16;
+    n1 = 1.0f;
+    n2 = 1.0f;
+
     
 }
 
@@ -207,6 +210,7 @@ Vector Material::refract(const Vector& Ray_in, const Vector& Normal , float N1, 
         const double n = N1 / N2;
         const double cosI = -Normal.dot(Ray_in);
         const double sinT2 = n * n * (1.0 - cosI * cosI);
+//        if(sinT2 > 1.0) return reflect(Ray_in, Normal);
         if(sinT2 > 1.0) return Vector(INT64_MAX,INT64_MAX,INT64_MAX);
         const double cosT = sqrt(1.0 - sinT2);
         return Ray_in*n + Normal*(n * cosI - cosT);

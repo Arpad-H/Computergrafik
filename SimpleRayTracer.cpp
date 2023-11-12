@@ -45,13 +45,16 @@ SimpleRayTracer::SimpleRayTracer(unsigned int MaxDepth) {
 
 void SimpleRayTracer::traceScene(const Scene &SceneModel, RGBImage &Image) {
     Camera camera(-8, 1, 1, 0.75, 640, 480);
-    for (int x = 0; x < Image.width(); x++) {
-        for (int y = 0; y < Image.height(); y++) {
-            Color c = trace(SceneModel, camera.Position(), camera.generateRay(x, y), 1);
-            Image.setPixelColor(x, y, c);
-        }
-    }
-
+//    for (int x = 0; x < Image.width(); x++) {
+//        for (int y = 0; y < Image.height(); y++) {
+//            Color c = trace(SceneModel, camera.Position(), camera.generateRay(x, y), 1);
+//            Image.setPixelColor(x, y, c);
+//        }
+//    }
+int x= 320;
+int y= 240;
+    Color c = trace(SceneModel, camera.Position(), camera.generateRay(x,y),1);
+    Image.setPixelColor(x, y, c);
 }
 
 Vector reflect(const Vector &I, const Vector &N) {
@@ -84,7 +87,8 @@ SimpleRayTracer::localIllumination(const Vector &Surface, const Vector &Eye, con
     Color SpecularColor = Mtrl.getSpecularCoeff(Surface) * Light.Intensity * SpecularTerm;
 
     // Combine diffuse and specular components
-    Color LocalIllumination = DiffuseColor + SpecularColor + Mtrl.getAmbientCoeff(Surface) * Light.Intensity;
+//    Color LocalIllumination = DiffuseColor + SpecularColor + Mtrl.getAmbientCoeff(Surface) * Light.Intensity;
+    Color LocalIllumination = DiffuseColor + SpecularColor;
     return LocalIllumination;
 }
 
@@ -116,48 +120,39 @@ Color SimpleRayTracer::trace(const Scene &SceneModel, const Vector &o, const Vec
 /////////////////////////////////////////////////
     Vector newDir;
 //    Refraktion
-    // wenn eins ungleich 1 dann findet refraktion statt
+//     wenn eins ungleich 1 dann findet refraktion statt
 //    if (closestTriangle.pMtrl->n1 != 1 || closestTriangle.pMtrl->n2 != 1) {
-//        float n1 = closestTriangle.pMtrl->getN1();
-//        float n2 = closestTriangle.pMtrl->getN2();
-//
-//        //Snells Law
-//        if (normal.dot(d) > 0) {
-//            normal =-normal ;
-//            float temp = n1;
-//            n1 = n2;
-//            n2 = temp;
-//        }
-//        Vector refractedDirection = closestTriangle.pMtrl->refract(d, normal, n1, n2);
-//
-//        //check if it got refracted
-//        if (refractedDirection.X != INT64_MAX && refractedDirection.Y != INT64_MAX &&
-//            refractedDirection.Z != INT64_MAX) {
-//
-//            //generate random number between 0 and 1
-//            float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-//            if(random > closestTriangle.pMtrl->schlick(surfacePoint, normal, n1, n2)){
-////                std::cout << "refracted" << std::endl;
-//                newDir = refractedDirection;
-//            }else{
-//                newDir = reflect(d, normal);
-//            }
-//        }
-//            //if not its reflected
+        float n1 = closestTriangle.pMtrl->getN1();
+        float n2 = closestTriangle.pMtrl->getN2();
+
+        //Snells Law
+        if (normal.dot(d) > 0) {
+            normal =-normal ;
+            float temp = n1;
+            n1 = n2;
+            n2 = temp;
+        }
+        Vector refractedDirection = closestTriangle.pMtrl->refract(d, normal, n1, n2);
+
+//        check if it got refracted
+        if (refractedDirection.X != INT64_MAX && refractedDirection.Y != INT64_MAX &&
+            refractedDirection.Z != INT64_MAX) {
+
+//            generate random number between 0 and 1
+            float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            if(random > closestTriangle.pMtrl->schlick(surfacePoint, normal, n1, n2)){
+//                std::cout << "refracted" << std::endl;
+                newDir = refractedDirection;
+            }else{
+                newDir = reflect(d, normal);
+            }
+        }
+//            if not its reflected
 //        else {
 //            newDir = reflect(d, normal);
 //        }
-//
+
 //    }
-
-//    //Reflektionen
-///////////////////////////////////////////////////
-    newDir = reflect(d, normal);
-    Color reflectionColor =
-            trace(SceneModel, surfacePoint, newDir, depth + 1) *
-            closestTriangle.pMtrl->getReflectivity(surfacePoint);
-/////////////////////////////////////////////////
-
 
 
     //Local Lighting
@@ -166,9 +161,13 @@ Color SimpleRayTracer::trace(const Scene &SceneModel, const Vector &o, const Vec
         localLighting += (localIllumination(surfacePoint, d * -1, normal, SceneModel.getLight(j),
                                             *closestTriangle.pMtrl));
     }
-
+    //reflektion
+//    newDir = reflect(d, normal);
+    Color reflectionColor =
+            trace(SceneModel, surfacePoint, newDir, depth + 1) *
+            closestTriangle.pMtrl->getReflectivity(surfacePoint);
     //Combine
-    Color finalColor = localLighting + reflectionColor;
+    Color finalColor = localLighting + reflectionColor + closestTriangle.pMtrl->getAmbientCoeff(surfacePoint);
     return finalColor;
 
 
