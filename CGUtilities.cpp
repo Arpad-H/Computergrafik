@@ -184,10 +184,10 @@ float Material::getSpecularExp(const Vector& Pos) const
 //TODO: Implement this
 float Material::schlick(const Vector &Dir, const Vector& Normal, const float &N1, const float &N2) const {
     //Schlick Aproximation folie 31
+    float cosTheta = Dir.dot(Normal);
     float R0 = ((N1 - N2) / (N1 + N2)) * ((N1 - N2) / (N1 + N2));
-    float R = R0 + (1 - R0) * pow((1 + Dir.dot(Normal)), 5);
+    float R = R0 + (1 - R0) * pow(1 -cosTheta, 5);
     return R;
-
 }
 float Material::getTransmissionCoeff(const Vector &Pos, const Vector& Normal) const {
     return 1-schlick(Pos, Normal, n1, n2);
@@ -207,9 +207,9 @@ float Material::getTransmissionCoeff(const Vector &Pos, const Vector& Normal) co
 //return Vector(INT64_MAX,INT64_MAX,INT64_MAX);
 Vector Material::refract(const Vector& Ray_in, const Vector& Normal , float N1, float N2) const
     {
-        const double n = N1 / N2;
-        const double cosI = -Normal.dot(Ray_in);
-        const double sinT2 = n * n * (1.0 - cosI * cosI);
+         float n = N1 / N2;
+         float cosI = -Normal.dot(Normal);
+         float sinT2 = n * n * (1.0 - cosI * cosI);
 //        if(sinT2 > 1.0) return reflect(Ray_in, Normal);
         if(sinT2 > 1.0) return Vector(INT64_MAX,INT64_MAX,INT64_MAX);
         const double cosT = sqrt(1.0 - sinT2);
@@ -335,7 +335,7 @@ float Material::getN1()  const{
     return n1;
 }
 float Material::getN2()  const{
-    return n1;
+    return n2;
 }
 void Material::setN1( float &N1)  {
     this->n1 = N1;
